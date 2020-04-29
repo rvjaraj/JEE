@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import ec.edu.ups.appdis.testejb.business.DemoEJBBeanLocal;
 import ec.edu.ups.appdis.testejb.entidades.Persona;
 import ec.edu.ups.appdis.testejb.entidades.Telefono;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,9 +48,11 @@ public class DemoClientWebPage extends HttpServlet {
             
             for (Persona persona : listaPersona) {
                 response.getWriter().println(persona.getNombre() + " " + persona.getCedula() +"<br>");
+                
                 for (Telefono telefono : persona.getListaTelefonos()) {
                     response.getWriter().println(telefono.getNumero() + " " + telefono.getTipo() + "<br>");
                 }
+                response.getWriter().println("<br>");
             }
 
             response.getWriter().println("<h1>"+contactosON.validarCedula("0105452171") + "</h1><br>");

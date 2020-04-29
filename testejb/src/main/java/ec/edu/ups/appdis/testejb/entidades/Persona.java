@@ -7,12 +7,16 @@ package ec.edu.ups.appdis.testejb.entidades;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  *
  * @author vinic
  */
+
 public class Persona implements Serializable{
+
     private int id;
     private String cedula;
     private String nombre;
