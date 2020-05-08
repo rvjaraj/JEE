@@ -1,5 +1,6 @@
-ec\edu\ups\appdis\testejb\dao\Conexion.class
 ec\edu\ups\appdis\testejb\dao\PersonaDAO.class
+ec\edu\ups\appdis\testejb\business\ContactosONRemote.class
+ec\edu\ups\appdis\testejb\business\ContactosONLocal.class
 ec\edu\ups\appdis\testejb\business\DemoEJBBean.class
 ec\edu\ups\appdis\testejb\dao\TelefonoDAO.class
 ec\edu\ups\appdis\testejb\business\DemoEJBBeanLocal.class

@@ -30,6 +30,8 @@ public interface ContactosONRemote {
     public Persona buscarPersonaCedula(String cedula)throws Exception;
 
     public void eliminarPersona(Persona p)throws Exception;
+    
+    public void eliminarPersonaId(int id)throws Exception;
 
     public void eliminarTelefono(int id)throws Exception;
 

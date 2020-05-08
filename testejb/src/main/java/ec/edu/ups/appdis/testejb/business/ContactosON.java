@@ -20,8 +20,9 @@ import javax.inject.Inject;
  */
 @Stateless
 public class ContactosON implements ContactosONRemote, ContactosONLocal {
+
     @Inject
-    PersonaDAO personaDAO ;
+    PersonaDAO personaDAO;
     @Inject
     TelefonoDAO telefonoDAO;
 
@@ -32,15 +33,7 @@ public class ContactosON implements ContactosONRemote, ContactosONLocal {
     public boolean guardadoContacto(Persona persona) throws Exception {
         if (validarCedula(persona.getCedula())) {
             try {
-                personaDAO.ingresar(persona);
-                int maxId = personaDAO.maxId();
-                if (maxId != 0) {
-                    List<Telefono> listaTelefonos = persona.getListaTelefonos();
-                    for (Telefono t : listaTelefonos) {
-                        t.setPersona_id(maxId);
-                        telefonoDAO.ingresar(t);
-                    }
-                }
+                personaDAO.insert(persona);
             } catch (Exception e) {
                 throw new Exception(e.getMessage());
             }
@@ -55,8 +48,8 @@ public class ContactosON implements ContactosONRemote, ContactosONLocal {
     public List<Persona> listarContactos() throws Exception {
         try {
             System.out.println("this is site");
-           // PersonaDAO p = new PersonaDAO();
-            return personaDAO.listar();
+            // PersonaDAO p = new PersonaDAO();
+            return personaDAO.findAll();
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -65,7 +58,7 @@ public class ContactosON implements ContactosONRemote, ContactosONLocal {
     @Override
     public List<Telefono> listarTelefonos(int id) throws Exception {
         try {
-            return telefonoDAO.listar(id);
+            return telefonoDAO.findByPersona(id);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -74,7 +67,7 @@ public class ContactosON implements ContactosONRemote, ContactosONLocal {
     @Override
     public Persona buscarPersonaCedula(String cedula) throws Exception {
         try {
-            return personaDAO.buscarCedula(cedula);
+            return personaDAO.findByCedula(cedula);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -83,13 +76,18 @@ public class ContactosON implements ContactosONRemote, ContactosONLocal {
     @Override
     public void eliminarPersona(Persona p) throws Exception {
         try {
-            List<Telefono> lista = p.getListaTelefonos();
-            for (Telefono t : lista) {
-                eliminarTelefono(t.getId());
-            }
-            personaDAO.eliminar(p.getId());
+            personaDAO.delete(p);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new Exception("Error 1 "+e.getMessage());
+        }
+
+    }
+    @Override
+    public void eliminarPersonaId(int p) throws Exception {
+        try {
+            personaDAO.deleteId(p);
+        } catch (Exception e) {
+            throw new Exception("Error 1 "+e.getMessage());
         }
 
     }
@@ -97,7 +95,7 @@ public class ContactosON implements ContactosONRemote, ContactosONLocal {
     @Override
     public void eliminarTelefono(int id) throws Exception {
         try {
-            telefonoDAO.eliminar(id);
+            telefonoDAO.delete(id);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -106,11 +104,7 @@ public class ContactosON implements ContactosONRemote, ContactosONLocal {
     @Override
     public void actualizarContacto(Persona persona) throws Exception {
         try {
-            personaDAO.actualizar(persona);
-            List<Telefono> listPersonas = persona.getListaTelefonos();
-            for (Telefono list : listPersonas) {
-                telefonoDAO.actualizar(list);
-            }
+            personaDAO.update(persona);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

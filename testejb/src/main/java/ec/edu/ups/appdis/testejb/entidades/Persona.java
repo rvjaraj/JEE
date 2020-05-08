@@ -6,37 +6,76 @@
 package ec.edu.ups.appdis.testejb.entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author vinic
+ * @author Vinicio
  */
+@Entity
+@Table(name = "persona")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p"),
+    @NamedQuery(name = "Persona.findById", query = "SELECT p FROM Persona p WHERE p.id = :id")})
+public class Persona implements Serializable {
 
-public class Persona implements Serializable{
-
-    private int id;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   
+    @Column(name = "id")
+    private Integer id;
+    
+    @Column(name = "cedula")
     private String cedula;
+    
+    @Column(name = "nombre")
     private String nombre;
-    private List<Telefono> listaTelefonos;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId", fetch = FetchType.EAGER)
+    private List<Telefono> listTelefonos;
 
     public Persona() {
     }
 
-    public Persona(int id, String cedula, String nombre, List<Telefono> listaTelefonos) {
+    public Persona(Integer id) {
+        this.id = id;
+    }
+
+    public Persona(String cedula, String nombre) {
+        
+        this.cedula = cedula;
+        this.nombre = nombre;
+    }
+
+    public Persona(Integer id, String cedula, String nombre, List<Telefono> telefonoCollection) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
-        this.listaTelefonos = listaTelefonos;
+        this.listTelefonos = telefonoCollection;
     }
+    
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,12 +95,19 @@ public class Persona implements Serializable{
         this.nombre = nombre;
     }
 
-    public List<Telefono> getListaTelefonos() {
-        return listaTelefonos;
+    public List<Telefono> getListTelefonos() {
+        return listTelefonos;
     }
 
-    public void setListaTelefonos(List<Telefono> listaTelefonos) {
-        this.listaTelefonos = listaTelefonos;
+    public void setListTelefonos(List<Telefono> listTelefonos) {
+        this.listTelefonos = listTelefonos;
+    }
+
+    
+
+    @Override
+    public String toString() {
+        return "ec.edu.ups.appdis.testejb.entidades.Persona[ id=" + id + " ]";
     }
     
 }
