@@ -5,63 +5,134 @@
  */
 package ec.edu.ups.appdis.testejb.controler;
 
+import ec.edu.ups.appdis.testejb.business.ContactosON;
+import ec.edu.ups.appdis.testejb.business.ContactosONLocal;
 import ec.edu.ups.appdis.testejb.entidades.Telefono;
-import java.util.ArrayList;
+import ec.edu.ups.appdis.testejb.entidades.Persona;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 /**
  *
  * @author Vinicio
  */
 @ManagedBean
+@ViewScoped
 public class ContactosBean {
-    private int id = 100;
-    private String cedula = "0105452171";
-    private String nombre = "Ricardo jara";
-    private List<Telefono> listTelefonos;
 
-    public int getId() {
-        return id;
+    @Inject
+    private ContactosONLocal on;
+
+    private List<Persona> listaPersonas;
+    
+    private Persona newPersona;
+    
+    private Persona personaAux;
+    
+    @PostConstruct
+    public void init() {
+        newPersona = new Persona();
+        newPersona.addTelefono(new Telefono());
+        loadDataPersona();
+        System.out.println("acacacacaca");
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Persona getPersonaAux() {
+        return personaAux;
     }
 
-    public String getCedula() {
-        return cedula;
+    public void setPersonaAux(Persona personaAux) {
+        this.personaAux = personaAux;
     }
 
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
+    
+    
+    public Persona getNewPersona() {
+        return newPersona;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setNewPersona(Persona newPersona) {
+        this.newPersona = newPersona;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public ContactosONLocal getOn() {
+        return on;
     }
 
-    public List<Telefono> getListTelefonos() {
-        return listTelefonos;
+    public void setOn(ContactosONLocal on) {
+        this.on = on;
     }
 
-    public void setListTelefonos(List<Telefono> listTelefonos) {
-        this.listTelefonos = listTelefonos;
+    public List<Persona> getListaPersonas() {
+        return listaPersonas;
+    }
+
+    public void setListaPersonas(List<Persona> listaPersonas) {
+        this.listaPersonas = listaPersonas;
+    }
+
+    
+
+    public String guardarDatos() {
+
+        try {
+            newPersona.getListTelefonos().forEach((t) -> t.setPersonaId(newPersona));
+            on.guardadoContacto(newPersona);
+            listaPersonas = on.listarContactos();
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " >>>>>>>>>>>>>>>>>>>");
+        }
+
+        return null;
+    }
+
+    private void loadDataPersona() {
+        try {
+            listaPersonas = on.listarContactos();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
     
-    public String guardarDatos(){
-        System.out.println(toString());
-        return null;
+    public  String addTelefono() {
+      newPersona.addTelefono(new Telefono());
+      return null;
+    }
+    
+    public  String addTelefono1() {
+      personaAux.addTelefono(new Telefono());
+      return null;
     }
 
     @Override
     public String toString() {
-        return "ContactosBean{" + "id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", listTelefonos=" + listTelefonos + '}';
+        return "ContactosBean{" + "on=" + on + ", listaPersonas=" + listaPersonas + ", newPersona=" + newPersona + '}';
     }
     
     
+    public String editarContacto(String cedula){
+        try{
+        personaAux = on.buscarPersonaCedula(cedula);
+            System.out.println(personaAux.getNombre() + ">>>>>>>>>>>>>>");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    
+    public String updatePersona(){
+        try {
+            personaAux.getListTelefonos().forEach((t) -> t.setPersonaId(personaAux));
+            on.actualizarContacto(personaAux);
+            init();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 }

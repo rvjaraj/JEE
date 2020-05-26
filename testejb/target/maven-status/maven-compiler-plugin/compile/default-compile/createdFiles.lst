@@ -7,5 +7,6 @@ ec\edu\ups\appdis\testejb\business\DemoEJBBeanLocal.class
 ec\edu\ups\appdis\testejb\business\ContactosON.class
 ec\edu\ups\appdis\testejb\entidades\Telefono.class
 ec\edu\ups\appdis\testejb\business\DemoEJBBeanRemote.class
+ec\edu\ups\appdis\testejb\controler\ContactosBean.class
 ec\edu\ups\appdis\testejb\view\DemoClientWebPage.class
 ec\edu\ups\appdis\testejb\entidades\Persona.class

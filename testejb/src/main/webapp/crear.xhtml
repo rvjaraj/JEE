@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition template="templete/templete.xhtml">
+        <ui:define name="title">
+            CREAR PERSONAS
+        </ui:define>
+        <ui:define name="content">
+            <h:form class="form-horizontal form-material">
+                <div class="form-group">
+                    <label class="col-md-12">Cedula</label>
+                    <div class="col-md-12">
+                        <h:inputText value="#{contactosBean.newPersona.cedula}"  a:placeholder="0105452171"
+                                     class="form-control form-control-line" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12">Nombre</label>
+                    <div class="col-md-12">
+                        <h:inputText value="#{contactosBean.newPersona.nombre}" a:placeholder="Ricardo Jara"
+                                     class="form-control form-control-line" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:commandButton action="#{contactosBean.addTelefono()}" value= "ADDTELEFON">
+                        <f:ajax render="tblTelefonos" execute="tblTelefonos"/>
+                    </h:commandButton>
+
+                    <h:dataTable id="tblTelefonos" value="#{contactosBean.newPersona.listTelefonos}"  var="telefonos">
+                        <h:column>
+                            <f:facet name="header">NUMERO</f:facet>
+                            <h:inputText value="#{telefonos.numero}"></h:inputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">TIPO</f:facet>
+                            <h:inputText value="#{telefonos.tipo}"></h:inputText>
+                        </h:column>
+                    </h:dataTable>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <h:commandButton action="#{contactosBean.guardarDatos()}" value= "Guardar Contacto" class="btn btn-success">
+                            <f:ajax render="@all" execute="@form"/>
+                        </h:commandButton>
+                    </div>
+                </div>
+            </h:form>
+            <h:form id="idform">
+                <div class="table-responsive" id="table1">
+                    <h:dataTable value="#{contactosBean.listaPersonas}" var="person" class="table" id="table"> 
+                        <h:column>
+                            <f:facet name="header">CEDULA</f:facet>
+                                #{person.cedula}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Nombre</f:facet>
+                                #{person.nombre}
+                        </h:column>
+                        <h:column>
+
+                            <f:facet name="header">Editar</f:facet>
+                            <h:commandButton action="#{contactosBean.editarContacto(person.cedula)}" value="Editar" class="btn btn-primary" 
+                                             a:data-toggle="modal"   a:data-target="#exampleModalCenter">
+                                <f:ajax execute="idform" render="formEditar"></f:ajax>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                </div>
+            </h:form>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Editar Persona</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h:form class="form-horizontal form-material" id="formEditar">
+                                <div class="form-group">
+                                    <label class="col-md-12">Cedula</label>
+                                    <div class="col-md-12">
+                                        <h:inputText value="#{contactosBean.personaAux.cedula}"  a:placeholder="0105452171"
+                                                     class="form-control form-control-line" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">Nombre</label>
+                                    <div class="col-md-12">
+                                        <h:inputText value="#{contactosBean.personaAux.nombre}" a:placeholder="Ricardo Jara"
+                                                     class="form-control form-control-line" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <h:commandButton action="#{contactosBean.addTelefono1()}" value= "ADDTELEFON">
+                                        <f:ajax render="tblTelefonosE" execute="tblTelefonosE"/>
+                                    </h:commandButton>
+
+                                    <h:dataTable id="tblTelefonosE" value="#{contactosBean.personaAux.listTelefonos}"  var="telefonos">
+                                        <h:column>
+                                            <f:facet name="header">NUMERO</f:facet>
+                                            <h:inputText value="#{telefonos.numero}"></h:inputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">TIPO</f:facet>
+                                            <h:inputText value="#{telefonos.tipo}"></h:inputText>
+                                        </h:column>
+                                    </h:dataTable>
+
+                                </div>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <h:commandButton action="#{contactosBean.updatePersona()}" class="btn btn-primary" value="Save changes" >
+                                <f:ajax execute="formEditar" render="@all" ></f:ajax>
+                            </h:commandButton>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

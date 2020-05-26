@@ -6,7 +6,7 @@
 package ec.edu.ups.appdis.testejb.entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,8 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p"),
     @NamedQuery(name = "Persona.findById", query = "SELECT p FROM Persona p WHERE p.id = :id")})
-public class Persona implements Serializable {
 
+public class Persona implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,7 +102,11 @@ public class Persona implements Serializable {
         this.listTelefonos = listTelefonos;
     }
 
-    
+    public void addTelefono(Telefono t){
+        if(listTelefonos == null)
+            listTelefonos = new ArrayList<>();
+        listTelefonos.add(t);
+    }
 
     @Override
     public String toString() {

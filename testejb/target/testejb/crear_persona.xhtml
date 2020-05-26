@@ -1,16 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Ricardo Jara</title>
     </h:head>
     <h:body>
         <h1>Ingreso de persona</h1>
         <h:form>
-            Id: <h:inputText value="#{contactosBean.id}" /><br></br>
-            Cedula:<h:inputText value="#{contactosBean.cedula}" /><br></br>
-            Nombre:<h:inputText value="#{contactosBean.nombre}" /><br></br>
+            Cedula:<h:inputText value="#{contactosBean.newPersona.cedula}" /><br></br>
+            Nombre:<h:inputText id="txNombre" value="#{contactosBean.newPersona.nombre }" /><br></br>
+            
+            <h:commandButton action="#{contactosBean.addTelefono()}" value= "ADDTELEFON">
+                <f:ajax render="tblTelefonos" execute="tblTelefonos"/>
+            </h:commandButton>
+            
+            <h:dataTable id="tblTelefonos" value="#{contactosBean.newPersona.listTelefonos}"  var="telefonos">
+                <h:column>
+                    <f:facet name="header">NUMERO</f:facet>
+                    <h:inputText value="#{telefonos.numero}"></h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">TIPO</f:facet>
+                    <h:inputText value="#{telefonos.tipo}"></h:inputText>
+                </h:column>
+            </h:dataTable>
+
             <h:commandButton action="#{contactosBean.guardarDatos()}" value= "Guardar Contacto"/>
         </h:form>
     </h:body>
