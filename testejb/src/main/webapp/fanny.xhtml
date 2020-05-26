@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template="cabecera.xhtml">
+        <ui:define name="title">
+            En la cabecera estoy trabajando desde Fanny
+        </ui:define>
+
+        <ui:define name="content">
+            <h:body>
+                <h:form id="form1">
+                    <h:inputText value="#{beanFanny.cedula}"  a:placeholder="loquedebeescribir" />
+                    <h:commandButton value="CLICKME" action="#{beanFanny.metodoFanny()}">
+                        <f:ajax render="@all" execute="form1"/>
+                    </h:commandButton>
+                </h:form>
+
+                <h:panelGroup id="p1">
+                    <h:form>
+                        Variabel 1: <h:inputText value="#{beanFanny.variable1}"   />
+                    </h:form>
+                </h:panelGroup>
+
+                <h:panelGroup id="p2">
+                    <h:form>
+                        Variabel v2: <h:inputText value="#{beanFanny.varaible2}"  />
+                    </h:form>
+                </h:panelGroup>
+
+
+            </h:body>
+        </ui:define>
+    </ui:composition>
+</html>
+
